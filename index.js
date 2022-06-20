@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 });
 app.get('/', (req, res) => {
  
- res.redirect('/birthday2.htm');
+ res.redirect('/chatlog.htm');
  //  set the default html  file. 
  
 })
