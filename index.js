@@ -1,8 +1,9 @@
+// make sure and install npm i  express fs node=fetch
+
 const express = require('express')
 const fs = require("fs");
 const app = express()
 const fetch = require("node-fetch");
-
 var lasttime = 0;
 
 const port = 3000
@@ -27,7 +28,7 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
  
  res.redirect('/birthday2.htm');
- 
+ //  set the default html  file. 
  
 })
 
