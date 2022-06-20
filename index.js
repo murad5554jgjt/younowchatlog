@@ -124,8 +124,6 @@ function writeLogTest(data){
 	}
 	
 	
-	
-	
 }
 );
 }
@@ -142,8 +140,6 @@ function writeLog(data){
 })
 
 }
-
-
 
 var results="";
 
@@ -273,7 +269,6 @@ writeLogTest(outstuff);
 
 
 }
-
 
 
 function timeConverter(UNIX_timestamp){
