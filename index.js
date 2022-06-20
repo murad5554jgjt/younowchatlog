@@ -17,7 +17,7 @@ var start = false;
 const date = require('date-and-time')
 const now  =  new Date();
 const s = date.format(now,'MM_DD_YYYY_');
-  
+  var UserOffline = false; 
 
 app.use(express.static('public'));
 app.use(express.static('./'));
@@ -27,8 +27,13 @@ app.use((req, res, next) => {
 });
 app.get('/', (req, res) => {
  
- res.redirect('/chatlog.htm');
- //  set the default html  file. 
+if(UserOffline!=false){
+	
+ res.redirect('/birthday2.htm');
+ }
+ {
+	 res.redirect('/Error.htm');
+ }
  
 })
 
@@ -149,10 +154,17 @@ var results="";
     const json = await response.json();
 //console.log(json);
 
+if(json.errorCode ==206){
+	console.log("User offline");
+UserOffline= true; 
+	
+}
+else{
+	console.log(json);
 	displayComment(json['comments']);
 	displayUserOnly(json['tfl']);
 	
-console.log("...");
+}
   } catch (error) {
     console.log(error);
   }
