@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
  
 if(UserOffline!=false){
 	
- res.redirect('/birthday2.htm');
+ res.redirect('/chat.htm');
  }
  {
 	 res.redirect('/Error.htm');
