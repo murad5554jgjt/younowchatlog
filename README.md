@@ -1,4 +1,4 @@
-# You chat log
+# younow.com chat log
 Younow.com  chat log project
 make sure  and  install nodejs  before  hand 
 email  me  at  santiago.puppylinux@gmail.com  if you have  any questions
