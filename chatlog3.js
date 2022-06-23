@@ -1,3 +1,5 @@
+// chatlog3  includes log for  super messages 
+
 const fs = require("fs");
 
 const date = require('date-and-time')
@@ -5,7 +7,7 @@ const now  =  new Date();
 const s = date.format(now,'MM_DD_YYYY_');
 const fetch = require("node-fetch");
 
-const username = "RTUltimateWheelieDaughter"; 
+const username = ""; 
 var userId; 
 
 
@@ -14,7 +16,7 @@ const Pusher = require("pusher-js")
 FetchEvent();
 
 function FetchEvent(){
-var userId = 53462461
+var userId =  // goes here user  id   
 pusher = new Pusher ('d5b7447226fc2cd78dbb', {
         cluster: "younow"
     });
