@@ -1,11 +1,14 @@
+// saves chat log and  gifts  given  in a broadcast on younow
+
 const fs = require("fs");
-// Saves  chat and  gifts given :) 
+
 const date = require('date-and-time')
 const now  =  new Date();
 const s = date.format(now,'MM_DD_YYYY_');
 const fetch = require("node-fetch");
 
-const username=""
+const username ="";
+
 var userId; 
 var goodies
 
@@ -29,25 +32,21 @@ pusher = new Pusher ('d5b7447226fc2cd78dbb', {
 		
         if (data.message !== "undefined")
     
-{
+			{
 	var dataout = "" ; 
- for (let i = 0; i < data.message.comments.length; i++)
-            {
+			for (let i = 0; i < data.message.comments.length; i++)
+				{
 				
 				let username = data.message.comments[i].name;
-				let TimsStamp =  data.message.comments[i].timestamp; 
+				let TimsStamp =  data.message.comments[i].timestamp; 				   
 				
-				//console.log(data.message.comments[i]);
+				dataout = dataout + "<div class='msg'>"  +data.message.comments[i].name  +"  "+ timeConverter(TimsStamp) +" <b> " + data.message.comments[i].comment + "</b><div>"; 
 				
-			//	console.log(dataout +  data.message.comments[i].name  + "  " + timeConverter(TimsStamp) +"  " + data.message.comments[i].comment); 
-				   dataout = dataout + "<div class='msg'>"  +data.message.comments[i].name  +"  "+ timeConverter(TimsStamp) +" <b> " + data.message.comments[i].comment + "</b><div>"; 
-				
-			//+"<div class='msg'>" + MSG[i]['name'] + "  " + timeConverter(timeCurrent) + "   <b> "  + MSG[i]['comment'] + "</b><div/>"; 	
-				
+
+				}
+	
+	
 			}
-	
-	
-	}
 	
 	writeLogTest(username,dataout)
 	
@@ -58,18 +57,14 @@ pusher = new Pusher ('d5b7447226fc2cd78dbb', {
              for (i = 0; i < data.message.stageGifts.length; i++)
             {
           
-		
-		//console.log(data.message.stageGifts[0].giftId)
-		
-			writeLogTest2(username,"\r<br>"+displayGiftOnly(data.message.stageGifts[0].giftId))
+			writeLogTest2(username,"\r<br><b>"+ data.message.stageGifts[0].name + " </b>  Gave : "+displayGiftOnly(data.message.stageGifts[0].giftId))
 			}
 		}
- //console.log( data.message);
  
-
- //
         }
     );
+	
+	
 	channel.bind ('onSuperMessage', function (data)
     {
 		
@@ -94,22 +89,18 @@ pusher = new Pusher ('d5b7447226fc2cd78dbb', {
 
 }
 function displayGiftOnly(i){
-	//"id":1065,"SKU":"PEARL_TIP"
 	
 	index =0; 
 	var index =0; 
-stuff = goodies.goodies;
+	stuff = goodies.goodies;
 
-while (index<stuff.length){
+		while (index<stuff.length){
 	
-	if((stuff[index]['id'] == i )){
-	return(stuff[index]['SKU']); 
-		
-		
-	break; 
-	
-	}
-		//console.log(stuff[index][SKU]);
+				if((stuff[index]['id'] == i )){
+				return(stuff[index]['SKU']); 
+				break;
+				}
+
 		
 	
 	index++;  
@@ -227,11 +218,7 @@ var error;
         .then (blob => blob.json ())
         .then (data =>
         {
-			
-			
-		
-			
-            json = JSON.stringify (data, null, 2);
+			   json = JSON.stringify (data, null, 2);
             let done = JSON.parse (json);
             console.log (done.errorCode);
             if (json.length < 1)
@@ -240,7 +227,7 @@ var error;
                 error = true;
             } else if (done.errorCode === 102)
             {
-console.log ("No Data Found");
+			console.log ("No Data Found");
                 error = true;
             } else if (done.errorCode !== 0)
             {
@@ -256,7 +243,7 @@ console.log ("No Data Found");
             {
                 userId = done.userId;
                 broadcastId = done.broadcastId;
-             //console.log(userId); 
+             console.log("Logging " +  username +" " +userId); 
 			 
                FetchEvent ();
                 return;
@@ -274,8 +261,8 @@ function writeLog(data){
 
   fs.appendFile("./"+s+username+'.txt',
   `${data} \r`
-,()=>{
- console.log('Successfully saved');
+	,()=>{
+
 })
 
 }
@@ -283,8 +270,6 @@ function writeLog(data){
 
 async function Retry()
 {
-    console.log ("Retrying in 5 seconds");
-    //AddToChat ("Retrying in 5 seconds", "HelperRobot", "basic", 50250342, 0, 0, false, 0);
 
     await sleep (5000);
     error = false;
@@ -305,3 +290,4 @@ async function DownloadGifts()
             goodies = JSON.parse (json);
         });
 }
+
