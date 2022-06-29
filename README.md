@@ -7,7 +7,7 @@ to see the chat log  find the username  and  .txt file
 run node index.js 
 will open  chat.html in your broswer. 
 
-#  Standalone without  nodejs  or  installing  of  any extas  v2
+#  Standalone without  nodejs  or  installing  or  any extas  v2
 Light mode without saving log or  gifs
 
 Works great. Does not display stickers  or emojs  from the chat. 
