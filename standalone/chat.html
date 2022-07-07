@@ -8,7 +8,7 @@
 /* Works on Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: blue white;
+  scrollbar-color: black green;
 }
 
 /* Works on Chrome, Edge, and Safari */
@@ -17,22 +17,22 @@
 }
 
 *::-webkit-scrollbar-track {
-  background: blue;
+  background: black;
 }
 
 *::-webkit-scrollbar-thumb {
   background-color: black;
   border-radius: 20px;
-  border: 10px solid  white;
+  border: 10px solid  green;
 }
 body{
  scrollbar-color: black green;   /* scroll thumb and track */ 
 }
 .msg{
-	background-color:white;
+
 	float:center;
 	display: block;
-	color:green;
+	color:white;
 	word-wrap: normal;
 	padding:10px;
 	border: 2px solid black;
@@ -63,7 +63,7 @@ body{
 	float:center;
 	border: 10px solid black;
 	border-radius: 5px;
-	background-color:gray
+	
 };
 .imground{
 
@@ -72,11 +72,12 @@ body{
 }
 
 .gifts{
-color:black; 
+color:red;
 float:center; 
 
 }
 body{
+background-color:black; 
 
   }
   input,button{
@@ -235,7 +236,7 @@ function displayGiftOnly(i){
 				if((stuff[index]['id'] == i )){
 					
 					if(stuff[index].extraData.value > 0)  {	
-					return(stuff[index]['SKU'] + "Value of"   +stuff[index].extraData.value); 
+					return(stuff[index]['SKU'] + " Value of "   +stuff[index].extraData.value); 
 					
 					}
 					
@@ -308,17 +309,20 @@ function displayGiftOnly(i){
    
         channel.bind('onGift', function (data)
         {
-
-		dataout = "<div  class='gifts'> <center>"+ displayGiftOnly(data.message.stageGifts[0].giftId)+"</center></div>"
+let tempUsername = data.message.stageGifts[0].profileUrlString
+		dataout = "<div  class='gifts'>" +tempUsername+ " Gave <center>"+ displayGiftOnly(data.message.stageGifts[0].giftId)+"</center></div>"
 		displayIt(dataout)
 		//console.log(displayGiftOnly(data.message.stageGifts[0].giftId))
-     //console.log(data);
+     //console.log(data.message.stageGifts[0]);
         });
 	
         //Get Stickers
         channel.bind('onSticker', function (data)
         {
-		    //console.log('sticker data', data);
+		
+		dealwithFreeStickers(data);
+		
+		  //  console.log('sticker data', data);
             //handleNewSticker(data);
         });
 
@@ -326,7 +330,7 @@ function displayGiftOnly(i){
         channel.bind('onPartnerSticker', function (data)
         {
 		
-		//console.log("Partener sticker data " + data )
+		console.log("Partener sticker data " + data )
             //handleOnOldPartnerSticker(data);
         });
    
@@ -339,13 +343,26 @@ function displayGiftOnly(i){
 			dataout = dataout + "<div class='msg' style='color:red'>"  +data.message.superMessages[0].name  +"  "+ timeConverter(data.message.superMessages[0].serverTime) +" <b> " + data.message.superMessages[0].comment + "</b><div>"; 
 			displayIt(dataout);
 			
-			console.log(data.message)
+		//	console.log(data.message)
 		});
 		
 	
 	
 	
 }  
+function dealwithFreeStickers(data){
+
+	var ids = data.message.stickers[0].stickerUserId; 
+	var stickername = data.message.stickers[0].assetSku; 
+	var fullpath = "https://ynassets.younow.com/subscriptionsTiers/usersAssets/live/" + ids+"/" +stickername +"/web_" +stickername +".png?assetRevision=1 " ;
+	var sent_user = data.message.stickers[0].profile;
+	var imagedata= "<div class='img' >" +sent_user+"  <br><img src='" + fullpath +"'/> </div>"
+
+	displayIt(imagedata); 
+ 
+
+}
+
   function timeConverter(UNIX_timestamp){
   var a = new Date(UNIX_timestamp * 1000);
   var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
