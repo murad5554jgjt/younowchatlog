@@ -111,17 +111,22 @@ body{
 	background-color: #555;
 	}
   .chatwindow{
+  
   display:none;
   margin-left: auto;
   margin-right: auto;
+  
   }
   
   .introWindows{
-  align:center;
+  position:relative;
+  
+  
   color:red;
-  margin-left: auto;
-  margin-right: auto;
-  float:center;
+	top:50%;
+	left:50%;
+	
+	right:50%;	
   width:300px;
   height:200px;
   border: 1px solid;
@@ -228,8 +233,14 @@ function displayGiftOnly(i){
 		while (index<stuff.length){
 	
 				if((stuff[index]['id'] == i )){
-				return(stuff[index]['SKU']); 
-				break;
+					
+					if(stuff[index].extraData.value > 0)  {	
+					return(stuff[index]['SKU'] + "Value of"   +stuff[index].extraData.value); 
+					
+					}
+					
+					else{ return(stuff[index]['SKU']);}	
+			break;
 				}
 
 	index++;  
@@ -240,8 +251,8 @@ function displayGiftOnly(i){
 	
 } 
 
-async function DownloadGifts()
-{
+	async function DownloadGifts()
+	{
     //console.log ("Fetching Gifts...");
     targetUrl = 'https://ynassets.younow.com/giftsData/live/de/data.json';
     var json = fetch (targetUrl)
@@ -251,10 +262,10 @@ async function DownloadGifts()
             json = JSON.stringify (data, null, 2);
             goodies = JSON.parse (json);
         });
-}
+	}
 
  
-function FetchEvent (userId){
+	function FetchEvent (userId){
 		pusher = new Pusher ('d5b7447226fc2cd78dbb', {
         cluster: "younow"
 		});
@@ -298,14 +309,10 @@ function FetchEvent (userId){
         channel.bind('onGift', function (data)
         {
 
-		//	
-			//displayIt(dataout)
-		//	console.log(data)
-		
 		dataout = "<div  class='gifts'> <center>"+ displayGiftOnly(data.message.stageGifts[0].giftId)+"</center></div>"
 		displayIt(dataout)
 		//console.log(displayGiftOnly(data.message.stageGifts[0].giftId))
-     
+     //console.log(data);
         });
 	
         //Get Stickers
@@ -327,26 +334,12 @@ function FetchEvent (userId){
    
 		channel.bind ('onSuperMessage', function (data)
 			{        
-				if (data.message !== "undefined")
-				{
-				var dataout = "" ; 
-				
-					for (let i = 0; i < data.message.superMessages; i++)
-					{
-				
-					let username = data.message.superMessages[i].name;
-					let TimsStamp =  data.message.superMessages[i].timestamp; 
-					let  whatsSaid = data.message.superMessages[i].comment 
-					dataout = dataout + "<div class='msg' style='color:red'>"  +data.message.superMessages[i].name  +"  "+ timeConverter(TimsStamp) +" <b> " + data.message.superMessages[i].comment + "</b><div>"; 
-					}
-	
-	
-			}
+		
 
-	
-		displayIt(dataout);
-
-
+			dataout = dataout + "<div class='msg' style='color:red'>"  +data.message.superMessages[0].name  +"  "+ timeConverter(data.message.superMessages[0].serverTime) +" <b> " + data.message.superMessages[0].comment + "</b><div>"; 
+			displayIt(dataout);
+			
+			console.log(data.message)
 		});
 		
 	
