@@ -35,7 +35,7 @@ body{
 	color:white;
 	word-wrap: normal;
 	padding:10px;
-	border: 2px solid black;
+	border: 2px solid green;
 	border-radius: 5px;
 	width:90%;
 	padding-top:10px;
@@ -52,7 +52,7 @@ body{
 
 .chat
 {
-	color:green;
+	color:white;
 	padding-left:100px;
 	overflow-y:scroll;
 	width:50%;height:75%; 
@@ -107,7 +107,9 @@ background-color:black;
   padding: 15px;
   border-radius: 4px;
 }
-
+img{
+border-radius: 4px;
+}
 	#myBtn:hover {
 	background-color: #555;
 	}
@@ -135,7 +137,11 @@ background-color:black;
   box-shadow: 5px 10px #888888;
   border-radius: 4px;
   }
-  
+  .img2{
+  width:100px;
+  height:100px;
+  border-radius: 4px;
+  }
 </style>
 
 <script src="https://js.pusher.com/2.2/pusher.min.js"> </script> 
@@ -240,7 +246,10 @@ function displayGiftOnly(i){
 					
 					}
 					
-					else{ return(stuff[index]['SKU']);}	
+					else{ 
+					
+					
+					return(stuff[index]['SKU']);}	
 			break;
 				}
 
@@ -289,8 +298,17 @@ function displayGiftOnly(i){
 						let username = data.message.comments[i].name;
 						let TimsStamp =  data.message.comments[i].timestamp; 
 						let whatsSaid = data.message.comments[i].comment 
-						dataout = dataout + "<div class='msg'>"  +data.message.comments[i].name  +"  "+ timeConverter(TimsStamp) +" <b> " + data.message.comments[i].comment + "</b><div>"; 
-				
+						var CommentUserId = data.message.comments[i].userId; 
+						var  userImage = GetuserImage(CommentUserId); 
+						var propslevel = (data.message.comments[i].propsLevel ) 
+						
+					//	dataout = dataout + "<div class='msg' style='color:white'><div>"+"<img  style='width:50px;height:50px; border-radius: 20px;align:left;' src='" + userImage+"'/>" + Math.abs(propslevel) + " " +data.message.comments[i].name  +" "+ timeConverter(TimsStamp) +" <b></div>" + data.message.comments[i].comment + "</b></div><div>"; 
+			
+			
+			dataout = dataout + "<table><tr><td>"+"<img  style='width:50px;height:50px; border-radius: 20px;align:left;' src='" + userImage+"'/></td><td  class='msg' style='color:white'>" + Math.abs(propslevel) + " " +data.message.comments[i].name  +" "+ timeConverter(TimsStamp) +"<br>"  +data.message.comments[i].comment + 
+		"</td></tr><table>"; 
+			
+			
 
 						}
 	
@@ -309,12 +327,15 @@ function displayGiftOnly(i){
    
         channel.bind('onGift', function (data)
         {
-let tempUsername = data.message.stageGifts[0].profileUrlString
+		
+		let tempUsername = data.message.stageGifts[0].profileUrlString
 		dataout = "<div  class='gifts'>" +tempUsername+ " Gave <center>"+ displayGiftOnly(data.message.stageGifts[0].giftId)+"</center></div>"
+		// fix  when  sub is gaven;
+		
+		console.log(data.message.stageGifts[0])
 		displayIt(dataout)
-		//console.log(displayGiftOnly(data.message.stageGifts[0].giftId))
-     //console.log(data.message.stageGifts[0]);
-        });
+        
+		});
 	
         //Get Stickers
         channel.bind('onSticker', function (data)
@@ -340,7 +361,7 @@ let tempUsername = data.message.stageGifts[0].profileUrlString
 			{        
 		
 
-			dataout = dataout + "<div class='msg' style='color:red'>"  +data.message.superMessages[0].name  +"  "+ timeConverter(data.message.superMessages[0].serverTime) +" <b> " + data.message.superMessages[0].comment + "</b><div>"; 
+			dataout = dataout + "<div class='msg' style='color:red'>"  +  +data.message.superMessages[0].name  +"  "+ timeConverter(data.message.superMessages[0].serverTime) +" <b> " + data.message.superMessages[0].comment + "</b><div>"; 
 			displayIt(dataout);
 			
 		//	console.log(data.message)
@@ -356,13 +377,20 @@ function dealwithFreeStickers(data){
 	var stickername = data.message.stickers[0].assetSku; 
 	var fullpath = "https://ynassets.younow.com/subscriptionsTiers/usersAssets/live/" + ids+"/" +stickername +"/web_" +stickername +".png?assetRevision=1 " ;
 	var sent_user = data.message.stickers[0].profile;
-	var imagedata= "<div class='img' >" +sent_user+"  <br><img src='" + fullpath +"'/> </div>"
+	var imagedata= "<div class='img' style='color:white' >" +sent_user+"  <br><img src='" + fullpath +"'/> </div>"
 
 	displayIt(imagedata); 
  
 
 }
+function GetuserImage(data){
 
+
+return   "https://ynassets.younow.com/user/live/" + data + "/" + data +".jpg"; 
+
+
+
+}
   function timeConverter(UNIX_timestamp){
   var a = new Date(UNIX_timestamp * 1000);
   var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
