@@ -243,20 +243,20 @@ function displayGiftOnly(i){
 		while (index<stuff.length){
 	
 				if((stuff[index]['id'] == i )){
-					
+					const whogotit = stuff[index].receiverFirstName
 					if(stuff[index].extraData.value > 0)  {	
-					return(stuff[index]['SKU'] + " Value of "   +stuff[index].extraData.value); 
+					return(stuff[index]['SKU'] + " Value of "   +stuff[index].extraData.value + " to "+ whogotit ); 
 					
 					}
 					else if (stuff[index].extraData.numOfLikes > 0){
-					return(stuff[index]['SKU'] + " Value of "   +stuff[index].extraData.numOfLikes); 
+					return(stuff[index]['SKU'] + " Value of "   +stuff[index].extraData.numOfLikes + " to " + whogotit); 
 					
 					
 					}
 					else{ 
 					
-					
-					return(stuff[index]['SKU']);}	
+	
+					return(stuff[index]['SKU']+ whogotit );}	
 			break;
 				}
 
