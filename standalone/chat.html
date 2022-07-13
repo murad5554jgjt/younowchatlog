@@ -244,19 +244,24 @@ function displayGiftOnly(i){
 	
 				if((stuff[index]['id'] == i )){
 					const whogotit = stuff[index].receiverFirstName
-					if(stuff[index].extraData.value > 0)  {	
-					return(stuff[index]['SKU'] + " Value of "   +stuff[index].extraData.value + " to "+ whogotit ); 
+					if(stuff[index].extraData['value'] !=0 )  {	
+					//console.log('here')
+					return(stuff[index]['SKU']   ); 
 					
 					}
-					else if (stuff[index].extraData.numOfLikes > 0){
-					return(stuff[index]['SKU'] + " Value of "   +stuff[index].extraData.numOfLikes + " to " + whogotit); 
+					else if ((stuff[index].extraData['numOfLikes']					 !=0)||(stuff[index].extraData['likes']					 !=0) ){
+					
+				return(stuff[index]['SKU'] + " Value of "   +stuff[index].extraData.likes); 
 					
 					
 					}
 					else{ 
 					
-	
-					return(stuff[index]['SKU']+ whogotit );}	
+					//console.log("final"); 
+					return(stuff[index]['SKU'] + stuff[index]['value']);
+					
+					}
+					
 			break;
 				}
 
@@ -309,11 +314,10 @@ function displayGiftOnly(i){
 						var  userImage = GetuserImage(CommentUserId); 
 						var propslevel = (data.message.comments[i].propsLevel ) 
 						
-					//	dataout = dataout + "<div class='msg' style='color:white'><div>"+"<img  style='width:50px;height:50px; border-radius: 20px;align:left;' src='" + userImage+"'/>" + Math.abs(propslevel) + " " +data.message.comments[i].name  +" "+ timeConverter(TimsStamp) +" <b></div>" + data.message.comments[i].comment + "</b></div><div>"; 
+				
 			
-			
-			dataout = dataout + "<table><tr><td>"+"<img  style='width:50px;height:50px; border-radius: 20px;align:left;' src='" + userImage+"'/></td><td  class='msg' style='color:white'>" + Math.abs(propslevel) + " " +data.message.comments[i].name  +" "+ timeConverter(TimsStamp) +"<br>"  +data.message.comments[i].comment + 
-		"</td></tr><table>"; 
+						dataout = dataout + "<table><tr><td>"+"<img  style='width:50px;height:50px; border-radius: 20px;align:left;' src='" + userImage+"'/></td><td  class='msg' style='color:white'>" + Math.abs(propslevel) + " " +data.message.comments[i].name  +" "+ timeConverter(TimsStamp) +"<br>"  +data.message.comments[i].comment + 
+						"</td></tr><table>"; 
 			
 			
 
@@ -337,9 +341,6 @@ function displayGiftOnly(i){
 		
 		let tempUsername = data.message.stageGifts[0].profileUrlString
 		dataout = "<div  class='msg' style='font-size:16px;'>" +tempUsername+ " Gave <center>"+ displayGiftOnly(data.message.stageGifts[0].giftId)+"</center></div>"
-		// fix  when  sub is gaven;
-		
-		console.log(data.message.stageGifts[0])
 		displayIt(dataout)
         
 		});
@@ -368,10 +369,11 @@ function displayGiftOnly(i){
 			{        
 		
 
-			dataout = dataout + "<div class='msg' style='color:red'>"  +  +data.message.superMessages[0].name  +"  "+ timeConverter(data.message.superMessages[0].serverTime) +" <b> " + data.message.superMessages[0].comment + "</b><div>"; 
+			dataout = dataout + "<div class='msg' style='color:red'>"    +data.message.superMessages[0].name +" <b> " + data.message.superMessages[0].comment + "</b><div>"; 
+			console.log(data.message.superMessages[0].name+""+data.message.superMessages[0].comment);
 			displayIt(dataout);
 			
-		//	console.log(data.message)
+		//	
 		});
 		
 	
