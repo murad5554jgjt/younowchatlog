@@ -149,7 +149,7 @@ height:100px;
 
 <script src="https://js.pusher.com/2.2/pusher.min.js"> </script> 
 
-
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
 
 </head>
@@ -223,11 +223,87 @@ function goDown(){
 //-->
 
 </script>
-	</div>   
+	</div>  
+
+
+	
     <script>
+// start of spotify  work  
 
 
 
+function get_current_song(){
+	// https://developer.spotify.com/console/get-users-currently-playing-track/?market=&additional_types=
+
+	var url = "https://api.spotify.com/v1/me/player/currently-playing";
+	var xhr = new XMLHttpRequest();
+	
+	xhr.open("GET", url);
+	xhr.setRequestHeader("Accept", "application/json");
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.setRequestHeader("Authorization", "Bearer  BQBDCZiHhtjqhUI94cNaeoN1FBd4hTcbsDHIGbIcz7vt1xlZHKA6vYmKhRf_LzOJx_OLmd8Z8pgfAnoFGj4gLBOrKspheF6-l9rSugTcJniQ2AZ_ph88ir9xAndOuU3PZEFmhAziMvozzg0er-2YdrYPuuNG9olc3-jtegKlFrBwhXAqIBmw-C2jujQ8PaG9MfF7");
+
+
+		xhr.onreadystatechange = function () {
+				if (xhr.readyState === 4) {
+					convertToJSON(xhr.responseText); 
+	 
+				}};
+
+				xhr.send();
+
+
+	
+}
+
+function getprev(){
+
+var url2 ="https://api.spotify.com/v1/me/player/recently-played?limit=1" 
+//https://developer.spotify.com/console/get-recently-played/?limit=&after=&before=
+
+var xhr = new XMLHttpRequest();
+xhr.open("GET", url2);
+
+xhr.setRequestHeader("Accept", "application/json");
+xhr.setRequestHeader("Content-Type", "application/json");
+xhr.setRequestHeader("Authorization", "Bearer  BQCIQzE0R-tv45SpfBfaVzE8GsaoonbeVjOVe-0hb8ISEY5nqfgxsXFH1ZMbZ3XVBsunOp1kbSmUSSvdWsEzDo5IMtmPf73TiesDE-MY-mD-trcD7jL1O6oYlhCwkRdhuKitDz_wMgB2yJZfEOPd6IurjqvU3lokUqXW_Fo6RLlXiwVG2OHnDY358TnR8HHt7HEp");
+
+
+xhr.onreadystatechange = function () {
+   if (xhr.readyState === 4) {
+toJSon(xhr.responseText);
+	  
+	  
+   }};
+
+xhr.send();
+
+
+
+}
+
+
+
+
+
+
+function toJSon(data3){
+//items.track.album.name
+
+const stuff=JSON.parse(data3);
+//var outputs = stuff.items[0].track.name;
+//document.getElementById('countDown').innerHTML = "Last played: " +outputs; 
+console.log(stuff);
+
+
+
+}
+
+
+
+
+
+// chat log below work
 
 var goodies = null; 
 
@@ -400,7 +476,7 @@ return   "https://ynassets.younow.com/user/live/" + data + "/" + data +".jpg";
 
 
 }
-  function timeConverter(UNIX_timestamp){
+function timeConverter(UNIX_timestamp){
   var a = new Date(UNIX_timestamp * 1000);
   var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   var year = a.getFullYear();
@@ -459,6 +535,9 @@ el3.onscroll = function() {scrollFunction()};
 <br/>
 
 <button onclick="goDown();" style='align:left;'>AutoScroll (On/Off)</button>
+
+</div>
+<div id="countDown" style="right:0;text-align:right;font-size:40px;">
 
 </div>
 
