@@ -175,6 +175,8 @@ Thanks to  Jen, Wonk_wifi and Layliee  and mark_c and Lindalu
 
 </div>
 <script>
+var totalLikes =0; 
+
 function displayChat(){
 
 var inputId= document.getElementById("userInputId").value;
@@ -266,7 +268,7 @@ xhr.open("GET", url2);
 
 xhr.setRequestHeader("Accept", "application/json");
 xhr.setRequestHeader("Content-Type", "application/json");
-xhr.setRequestHeader("Authorization", "Bearer  BQCIQzE0R-tv45SpfBfaVzE8GsaoonbeVjOVe-0hb8ISEY5nqfgxsXFH1ZMbZ3XVBsunOp1kbSmUSSvdWsEzDo5IMtmPf73TiesDE-MY-mD-trcD7jL1O6oYlhCwkRdhuKitDz_wMgB2yJZfEOPd6IurjqvU3lokUqXW_Fo6RLlXiwVG2OHnDY358TnR8HHt7HEp");
+xhr.setRequestHeader("Authorization", "Bearer  BQBTlpgxTtg4GK7QN47vRN0iDgGF4PPeRf379ey-aXDf8K1KI3YlLFFu14Fs7RQWO3s1xsd0eU9DpyWGecZm4k7K9euV7kgD0Hm8T3X2xo-Uapx2Ekt4KUrzy1sk7v18MRAwdK0-cxk215zki9dYWaAfbMcko0dAZ0qMCUJjzUqQHnfDkTybagbZmnnMoM1hMXTD");
 
 
 xhr.onreadystatechange = function () {
@@ -282,6 +284,9 @@ xhr.send();
 
 }
 
+window.setInterval(function(){
+//getprev();
+},50020);
 
 
 
@@ -309,42 +314,26 @@ var goodies = null;
 
 DownloadGifts();
 
+function customUserName(){
 
-function displayGiftOnly(i){
+
+}
+function displayGiftOnly(i,data2){
 	
 	index =0; 
 	var index =0; 
 	stuff = goodies.goodies;
-
-		while (index<stuff.length){
+	gifts = data2; 
 	
-				if((stuff[index]['id'] == i )){
-					const whogotit = stuff[index].receiverFirstName
-					if(stuff[index].extraData['value'] !=0 )  {	
-					//console.log('here')
-					return(stuff[index]['SKU']   ); 
-					
-					}
-					else if ((stuff[index].extraData['numOfLikes']					 !=0)||(stuff[index].extraData['likes']					 !=0) ){
-					
-				return(stuff[index]['SKU'] + " Value of "   +stuff[index].extraData.likes); 
-					
-					
-					}
-					else{ 
-					
-					//console.log("final"); 
-					return(stuff[index]['SKU'] + stuff[index]['value']);
-					
-					}
-					
-			break;
-				}
-
-	index++;  
+	var totalLikesGiven = gifts.extraData['numOfLikes']
 	
-}	
+	if(totalLikesGiven> 1)
+	{
+	totalLikes =totalLikes+  totalLikesGiven
+	console.log(totalLikes);
 	
+	return totalLikesGiven
+	}
 	
 	
 } 
@@ -383,18 +372,26 @@ function displayGiftOnly(i){
 				var dataout = "" ; 
 					for (let i = 0; i < data.message.comments.length; i++)
 						{
-						let username = data.message.comments[i].name;
-						let TimsStamp =  data.message.comments[i].timestamp; 
-						let whatsSaid = data.message.comments[i].comment 
+						var username = data.message.comments[i].name;
+						var	TimsStamp =  data.message.comments[i].timestamp; 
+						var whatsSaid = data.message.comments[i].comment 
 						var CommentUserId = data.message.comments[i].userId; 
-						var  userImage = GetuserImage(CommentUserId); 
+						var userImage = GetuserImage(CommentUserId); 
 						var propslevel = (data.message.comments[i].propsLevel ) 
+						var ifMod = data.message.comments[i].broadcasterMod; 
 						
 				
+			if(ifMod != false) {
 			
+			
+						dataout = dataout + "<table><tr><td>"+"<img  style='width:50px;height:50px; border-radius: 20px;align:left;' src='" + userImage+"'/></td><td  class='msg' style='color:green;background-color:white'>" + Math.abs(propslevel) + " " +data.message.comments[i].name  +" "+ timeConverter(TimsStamp) +"<br>"  +data.message.comments[i].comment + 
+						"</td></tr><table>"; 
+			}
+			else{
 						dataout = dataout + "<table><tr><td>"+"<img  style='width:50px;height:50px; border-radius: 20px;align:left;' src='" + userImage+"'/></td><td  class='msg' style='color:white'>" + Math.abs(propslevel) + " " +data.message.comments[i].name  +" "+ timeConverter(TimsStamp) +"<br>"  +data.message.comments[i].comment + 
 						"</td></tr><table>"; 
-			
+			}
+			//console.log(data.message.comments[i].broadcasterMod ); 
 			
 
 						}
@@ -416,9 +413,12 @@ function displayGiftOnly(i){
         {
 		
 		let tempUsername = data.message.stageGifts[0].profileUrlString
-		dataout = "<div  class='msg' style='font-size:16px;'>" +tempUsername+ " Gave <center>"+ displayGiftOnly(data.message.stageGifts[0].giftId)+"</center></div>"
+		var giftids = data.message.stageGifts[0].giftId;
+		var onlydata = data.message.stageGifts[0];
+		dataout = "<div  class='msg' style='font-size:16px;'>" +tempUsername+ " Gave <center> "+ displayGiftOnly(giftids,onlydata)+" likes </center></div>"
 		displayIt(dataout)
-        
+      //  console.log(data);
+		
 		});
 	
         //Get Stickers
@@ -430,6 +430,16 @@ function displayGiftOnly(i){
 		  //  console.log('sticker data', data);
             //handleNewSticker(data);
         });
+
+ channel.bind('onRaid', function (data)
+        {
+		console.log("raid : " +  data )
+		
+		});
+
+
+
+
 
         //Get Stickers
         channel.bind('onPartnerSticker', function (data)
@@ -446,7 +456,7 @@ function displayGiftOnly(i){
 		
 
 			dataout = dataout + "<div class='msg' style='color:red'>"    +data.message.superMessages[0].name +" <b> " + data.message.superMessages[0].comment + "</b><div>"; 
-			console.log(data.message.superMessages[0].name+""+data.message.superMessages[0].comment);
+			//console.log(data.message.superMessages[0].name+""+data.message.superMessages[0].comment);
 			displayIt(dataout);
 			
 		//	
