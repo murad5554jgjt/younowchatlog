@@ -5,6 +5,24 @@
        
 		
 <style>
+.info{
+top:0;
+right:15px;
+padding:100px;
+  border-radius: 25px;
+float:right;
+ position: fixed;
+background-color:white;
+color:black;
+width:150px;
+height:150px;
+text-align:center;
+font-family: 'Josefin Sans', sans-serif;
+font-weight: bolder;
+}
+
+
+
 /* Works on Firefox */
 * {
   scrollbar-width: thin;
@@ -268,12 +286,13 @@ xhr.open("GET", url2);
 
 xhr.setRequestHeader("Accept", "application/json");
 xhr.setRequestHeader("Content-Type", "application/json");
-xhr.setRequestHeader("Authorization", "Bearer  BQBTlpgxTtg4GK7QN47vRN0iDgGF4PPeRf379ey-aXDf8K1KI3YlLFFu14Fs7RQWO3s1xsd0eU9DpyWGecZm4k7K9euV7kgD0Hm8T3X2xo-Uapx2Ekt4KUrzy1sk7v18MRAwdK0-cxk215zki9dYWaAfbMcko0dAZ0qMCUJjzUqQHnfDkTybagbZmnnMoM1hMXTD");
+xhr.setRequestHeader("Authorization", "Bearer  BQBlqmt44NOqJsyPFwr8N3ynP9mldzWaaYvFPlVk9lTdDclYAOGrL_efooydFJ_M8VUjgtB-cxR8pV6QFgLBKDyDt7TzM4YtKfJE8TwRTrD7rKhwVQn5Fjwl-UHtJN21RthBQ4-me5ldG8nq3buJUDolDQmTxPI9h7lyhAa-lMoqDJ1_z7KCq4asKvHNFx0YTHMC");
 
 
 xhr.onreadystatechange = function () {
    if (xhr.readyState === 4) {
-toJSon(xhr.responseText);
+		
+	toJSon(xhr.responseText);
 	  
 	  
    }};
@@ -283,26 +302,28 @@ xhr.send();
 
 
 }
-
+/*
 window.setInterval(function(){
-//getprev();
-},50020);
+getprev();
+},60000);
 
+*/
 
 
 
 
 function toJSon(data3){
-//items.track.album.name
-
-const stuff=JSON.parse(data3);
-//var outputs = stuff.items[0].track.name;
-//document.getElementById('countDown').innerHTML = "Last played: " +outputs; 
-console.log(stuff);
 
 
+	const stuff=JSON.parse(data3);
+	var outputs = stuff
+
+	var nameOfLastPlayed=outputs.items[0].track.name
+	var thumbnail =  "<img src='"+outputs.items[0].track.album.images[0].url + "' style=width:200px;height:200px;border-radius:25px;>";
+	document.getElementById('info').innerHTML  = "<span style='font-size:20px;color:black;'>" + nameOfLastPlayed + "<br>" + thumbnail + "<br>";
 
 }
+
 
 
 
@@ -329,13 +350,20 @@ function displayGiftOnly(i,data2){
 	
 	if(totalLikesGiven> 1)
 	{
-	totalLikes =totalLikes+  totalLikesGiven
-	console.log(totalLikes);
 	
 	return totalLikesGiven
 	}
+	else if (gifts.extraData.value > 1){
 	
 	
+	return gifts.extraData.value;
+	
+	}
+	else{
+	
+	
+	return 0
+	}
 } 
 
 	async function DownloadGifts()
@@ -415,9 +443,18 @@ function displayGiftOnly(i,data2){
 		let tempUsername = data.message.stageGifts[0].profileUrlString
 		var giftids = data.message.stageGifts[0].giftId;
 		var onlydata = data.message.stageGifts[0];
+		
+		if(displayGiftOnly(giftids,onlydata) != 0){
+		
 		dataout = "<div  class='msg' style='font-size:16px;'>" +tempUsername+ " Gave <center> "+ displayGiftOnly(giftids,onlydata)+" likes </center></div>"
+		}
+		else{
+		dataout = "<div  class='msg' style='font-size:16px;'><center>" + onlydata.comment+"  </center></div>"
+		
+		
+		}
 		displayIt(dataout)
-      //  console.log(data);
+  
 		
 		});
 	
@@ -431,7 +468,7 @@ function displayGiftOnly(i,data2){
             //handleNewSticker(data);
         });
 
- channel.bind('onRaid', function (data)
+	channel.bind('onRaid', function (data)
         {
 		console.log("raid : " +  data )
 		
@@ -456,7 +493,7 @@ function displayGiftOnly(i,data2){
 		
 
 			dataout = dataout + "<div class='msg' style='color:red'>"    +data.message.superMessages[0].name +" <b> " + data.message.superMessages[0].comment + "</b><div>"; 
-			//console.log(data.message.superMessages[0].name+""+data.message.superMessages[0].comment);
+		
 			displayIt(dataout);
 			
 		//	
@@ -550,6 +587,8 @@ el3.onscroll = function() {scrollFunction()};
 <div id="countDown" style="right:0;text-align:right;font-size:40px;">
 
 </div>
+<div id="info" class="info">
 
+</div> 
 </body>
 	</html>
