@@ -182,10 +182,11 @@ Thanks to  Jen, Wonk_wifi and Layliee  and mark_c and Lindalu
 	</center>
 <div  id ="startWindow" class="introWindows">
 <center>
+<button onclick=displayStickers();  style="height:100px;height:40px" >Display Stickers</button>
 <br>
 <h2>Please type in user id</h2>
 <br>
-<input type="text" id="userInputId" value=51919855 />
+<input type="text" id="userInputId" value=51919855  />
 <br>
 <button onclick="displayChat();" >Sign in </button>
 <br>
@@ -194,6 +195,19 @@ Thanks to  Jen, Wonk_wifi and Layliee  and mark_c and Lindalu
 </div>
 <script>
 var totalLikes =0; 
+var stickers = true; 
+
+
+	function displayStickers(){
+
+	stickers = !stickers
+	if(stickers!=true){
+	alert("stickers are off"); 
+	}
+	else{
+	alert("stickers are On"); 
+	}
+	}
 
 function displayChat(){
 
@@ -275,6 +289,22 @@ function get_current_song(){
 
 	
 }
+
+
+function cleanUp(dirtytext){
+
+var i =0; 
+
+let text = dirtytext;
+let cleanText = text.replace(/covid|virus|overweight|ugly|facebook|feet/gi, "**** "); 
+
+
+
+
+return cleanText;
+
+}
+
 
 function getprev(){
 
@@ -402,12 +432,12 @@ function displayGiftOnly(i,data2){
 						{
 						var username = data.message.comments[i].name;
 						var	TimsStamp =  data.message.comments[i].timestamp; 
-						var whatsSaid = data.message.comments[i].comment 
+						var whatsSaid = cleanUp(data.message.comments[i].comment); 
 						var CommentUserId = data.message.comments[i].userId; 
 						var userImage = GetuserImage(CommentUserId); 
 						var propslevel = (data.message.comments[i].propsLevel ) 
 						var ifMod = data.message.comments[i].broadcasterMod; 
-						
+						;
 				
 			if(ifMod != false) {
 			
@@ -461,9 +491,12 @@ function displayGiftOnly(i,data2){
         //Get Stickers
         channel.bind('onSticker', function (data)
         {
-		
+		if(stickers !=false) {
 		dealwithFreeStickers(data);
+		}
+		else{
 		
+		}
 		  //  console.log('sticker data', data);
             //handleNewSticker(data);
         });
