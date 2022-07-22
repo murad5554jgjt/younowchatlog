@@ -186,7 +186,7 @@ Thanks to  Jen, Wonk_wifi and Layliee  and mark_c and Lindalu
 <br>
 <h2>Please type in user id</h2>
 <br>
-<input type="text" id="userInputId" value=51919855  />
+<input type="text" id="userInputId" value=2282276  />
 <br>
 <button onclick="displayChat();" >Sign in </button>
 <br>
@@ -442,11 +442,11 @@ function displayGiftOnly(i,data2){
 			if(ifMod != false) {
 			
 			
-						dataout = dataout + "<table><tr><td>"+"<img  style='width:50px;height:50px; border-radius: 20px;align:left;' src='" + userImage+"'/></td><td  class='msg' style='color:green;background-color:white'>" + Math.abs(propslevel) + " " +data.message.comments[i].name  +" "+ timeConverter(TimsStamp) +"<br>"  +data.message.comments[i].comment + 
+						dataout = dataout + "<table><tr><td>"+"<img  style='width:50px;height:50px; border-radius: 20px;align:left;' src='" + userImage+"'/></td><td  class='msg' style='color:red;background-color:white'>" + Math.abs(propslevel) + " " +data.message.comments[i].name  +" "+ timeConverter(TimsStamp) +"<br>"  +cleanUp(data.message.comments[i].comment) + 
 						"</td></tr><table>"; 
 			}
 			else{
-						dataout = dataout + "<table><tr><td>"+"<img  style='width:50px;height:50px; border-radius: 20px;align:left;' src='" + userImage+"'/></td><td  class='msg' style='color:white'>" + Math.abs(propslevel) + " " +data.message.comments[i].name  +" "+ timeConverter(TimsStamp) +"<br>"  +data.message.comments[i].comment + 
+						dataout = dataout + "<table><tr><td>"+"<img  style='width:50px;height:50px; border-radius: 20px;align:left;' src='" + userImage+"'/></td><td  class='msg' style='color:white'>" + Math.abs(propslevel) + " " +data.message.comments[i].name  +" "+ timeConverter(TimsStamp) +"<br>"  +cleanUp(data.message.comments[i].comment) + 
 						"</td></tr><table>"; 
 			}
 			//console.log(data.message.comments[i].broadcasterMod ); 
