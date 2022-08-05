@@ -209,7 +209,7 @@ height:100px;
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
-<script src="./GetUserId.js"></script>
+
 </head>
 
 <body> 
@@ -532,16 +532,24 @@ function ListCards(id){
 							
 							
 							}
-							
-							/* 
-							adjustment  needed  to check username or id 
-							just in case someoen changes their username 
-							
-							
-							*/ 
-							
-							
-							
+						//
+						
+						else if(whatsSaid.includes("!trade")!=false ){
+	
+						var temp = whatsSaid.split(" " ); 
+						if((temp.length > 1) ){
+						console.log("From "+username + " " 	+"sending to "+temp[1] +  "card number " +temp[2]  );
+	tradeCards(temp[1],username,temp[2])
+						}
+						else{
+						alert("Unable to  trade missing data"); 
+						
+						}
+	//
+	
+				}
+				
+						// 
 							if(ifMod != false) {
 			
 			
@@ -711,7 +719,7 @@ el3.onscroll = function() {scrollFunction()};
 <script>
 <!-- 
 async function ListCards(whoToDisplay){
-const response = await fetch('http://localhost:8080/list');
+const response = await fetch('http://localhost:8080/username/'+whoToDisplay);
 const body = await response.text();
 //console.log(body); 
 
@@ -723,7 +731,7 @@ var temp = results[i].split(",");
 
 
 output2= "<center><h2 style='font-family: Josefin Sans;font-size:30px', sans-serif;'>"+ whoToDisplay+ " "+"</h2></center>" 
-var onList = getUserIds(temp[1]); 
+ 
 //console.log(onList)
 //var Searching = getUserIds(whoToDisplay)
 var Searching = null; 
@@ -741,6 +749,8 @@ else{
 // nothing :D   
 
 }
+
+
 // console.log(temp[]);
  
 i++; 
@@ -788,17 +798,17 @@ function sleep(ms) {
 function tradeCards(ToUser,FromUser,cardSent){
 
 
-    targetUrl = 'http://locahost:8080/trade?UserSending='+FromUser+"&UserTo="+ToUser+"&card="+cardSent;
+    targetUrl = 'http://localhost:8080/trade?UserSending='+FromUser+"&UserTo="+ToUser+"&card="+cardSent;
     var json = fetch (targetUrl)
         .then (data =>
         {
-     //   console.log(data); 
+       console.log(data); 
 
 		
         });
 
 }
-//ListCards("emo.Karen.the.Unicorn");	
+ListCards("sassy.sky");	
 //saveRandom("test"); 
 //--> 
 </script> 
