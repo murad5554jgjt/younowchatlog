@@ -124,10 +124,7 @@ function displayGiftOnly(i,data2){
 	return 0
 	}
 } 
-function ListCards(id){
-// display cards  that a user has. 
-//fetch  file  http://localhost/
-}
+
 	async function DownloadGifts()
 	{
     //console.log ("Fetching Gifts...");
