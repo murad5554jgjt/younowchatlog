@@ -5,44 +5,7 @@
 // chat log below work
 var jsonInfoData =0;
 
- async function getAllJsonInfo(userIDS){
-		var urlForInfo='http://localhost:8081/info/'+userIDS;
-		var jsonId =0;
-	var json = fetch (urlForInfo)
-        .then (blob => blob.json ())
-        .then (data =>
-        {
-            json = JSON.stringify (data, null, 2);
-            jsonId = JSON.parse (json);
-			//console.log(jsonId);
 
-return jsonId; 
-
-			
-        });
-
-
-	
-}
-
- function assignReferees(moderatorUserId)
-    {
-        console.log("actionId=" + '10' + "&userId=" + publicUserId + "&onUserId=" + moderatorUserId + "&broadcastId=" + publicBroadcastId + "&broadcaster=0");
-
-var publicBroadcastId   = (getAllJsonInfo(moderatorUserId)).broadcastId 
-
-
-        fetch("//api.younow.com/php/api/doAdminAction", {
-            "headers": {
-                "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-                "x-requested-by": localStorage.getItem("requestBy")
-            },
-            "body": "actionId=" + '10' + "&userId=" + publicUserId + "&onUserId=" + moderatorUserId + "&broadcastId=" + publicBroadcastId + "&broadcaster=0",
-            "method": "POST",
-            "mode": "cors",
-            "credentials": "include"
-        });
-    }
 	
 	
 var goodies = null; 
