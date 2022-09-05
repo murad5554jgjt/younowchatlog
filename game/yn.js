@@ -1,9 +1,75 @@
 
 
+//var fans = https://cdn.younow.com/php/api/channel/getInfo/channelId=51919855 
 
 // chat log below work
+var jsonInfoData =0;
 
+ async function getAllJsonInfo(userIDS){
+		var urlForInfo='http://localhost:8081/info/'+userIDS;
+		var jsonId =0;
+	var json = fetch (urlForInfo)
+        .then (blob => blob.json ())
+        .then (data =>
+        {
+            json = JSON.stringify (data, null, 2);
+            jsonId = JSON.parse (json);
+			//console.log(jsonId);
+
+return jsonId; 
+
+			
+        });
+
+
+	
+}
+
+ function assignReferees(moderatorUserId)
+    {
+        console.log("actionId=" + '10' + "&userId=" + publicUserId + "&onUserId=" + moderatorUserId + "&broadcastId=" + publicBroadcastId + "&broadcaster=0");
+
+var publicBroadcastId   = (getAllJsonInfo(moderatorUserId)).broadcastId 
+
+
+        fetch("//api.younow.com/php/api/doAdminAction", {
+            "headers": {
+                "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+                "x-requested-by": localStorage.getItem("requestBy")
+            },
+            "body": "actionId=" + '10' + "&userId=" + publicUserId + "&onUserId=" + moderatorUserId + "&broadcastId=" + publicBroadcastId + "&broadcaster=0",
+            "method": "POST",
+            "mode": "cors",
+            "credentials": "include"
+        });
+    }
+	
+	
 var goodies = null; 
+ async function getSpecialFans(userid){
+ var ids =0; 
+ var el3 =   document.getElementById("info2") ;
+	http://localhost:8081/info/51919855
+	var urlForInfo='http://localhost:8081/info/'+userid;
+  var json = fetch (urlForInfo)
+        .then (blob => blob.json ())
+        .then (data =>
+        {
+            json = JSON.stringify (data, null, 2);
+            jsonId = JSON.parse (json);
+			
+			
+			
+ids=jsonId.totalFans;		
+				console.log(ids);
+
+			el3.innerHTML = "Total fans " +  ids;
+        });
+	
+			
+	
+	
+}
 
 async function ListCards(whoToDisplay){
 const response = await fetch('http://localhost:8080/username/'+whoToDisplay);
@@ -14,6 +80,10 @@ var results=body.split('<br>');
 var i=0; var counts=0;
 var output =""; 
 el3.style.visibility = 'visible';
+el3.style.color= 'white';
+
+
+console.log("within list cards"); 
 
 while(i < results.length){
 var temp = results[i].split(","); 
@@ -156,7 +226,7 @@ function FetchEvent (userId){
         if (data.message !== "undefined")
     
 			{
-				console.log(data.message);
+				
 				
 		var dataout = "" ; 
 					
@@ -169,8 +239,7 @@ function FetchEvent (userId){
 						var userImage = GetuserImage(CommentUserId); 
 						var propslevel = (data.message.comments[i].propsLevel ) 
 						var ifMod = data.message.comments[i].broadcasterMod; 
-					
-					
+		
 							if(whatsSaid.includes("!deal")!=false){
 					
 							saveRandom(username); 
@@ -180,13 +249,50 @@ function FetchEvent (userId){
 				
 							}
 							else if(whatsSaid.includes("!mine")!=false){
+						
+							
 							ListCards(username);	
-							playAudio(); 
+						//	playAudio(); 
 							
 							
 							}
 						//
+						else if(whatsSaid.includes("!play")!=false){
+						if(ifMod !=true){
+								
+								alert("Not a mod");
+								
+							}
+							
+							else{
+								
+								var tempstring= whatsSaid.split("!play"); 
+								//console.log(tempstring[1])
+								searchForSong(tempstring[1]);
+							
+							}
+							
+						}
 						
+						else if(whatsSaid.includes("!start")!=false){
+							
+							countdown( "countDown2", 10, 0 );
+						}
+						else if(whatsSaid.includes("pause")!=false){
+							
+							
+						}
+						else if(whatsSaid.includes("!new")!=false){
+							
+							init(); 
+							
+							
+						}
+						else if(whatsSaid.includes("!revoke")!=false){
+						removeItemFromList("3WATWS2Ywo5HeHtG0bE2iZ");
+							
+							
+						}
 						else if(whatsSaid.includes("!trade")!=false ){
 	
 						var temp = whatsSaid.split(" " ); 
@@ -200,6 +306,16 @@ function FetchEvent (userId){
 						}
 	//
 	
+				}
+				else if(whatsSaid.includes("!g")){
+					var inputs = whatsSaid.split(" "); 
+					//guess(inputs[1];
+					
+					createClick(inputs[1]);
+					
+						dataout = dataout + "<table><tr><td>"+"<img  style='width:50px;height:50px; border-radius: 20px;align:left;' src='" + userImage+"'/></td><td  class='msg' style='align:left;color:white'>" + Math.abs(propslevel) + " " +data.message.comments[i].name  +" "+ timeConverter(TimsStamp) +"<br>"  +cleanUp(data.message.comments[i].comment) + 
+						"</td></tr><table>"; 
+					
 				}
 				
 						// 
@@ -232,6 +348,7 @@ function FetchEvent (userId){
         channel.bind('onGift', function (data)
         {
 		
+		   playSound("./sounds/thank_you.wav"); 
 		let tempUsername = data.message.stageGifts[0].profileUrlString
 		var giftids = data.message.stageGifts[0].giftId;
 		var onlydata = data.message.stageGifts[0];
@@ -245,7 +362,7 @@ function FetchEvent (userId){
 		
 		
 		}
-			playAudio();
+		
 			displayIt(dataout)
   
 		
@@ -273,8 +390,6 @@ function FetchEvent (userId){
         {
            var  viewers= data.message.viewers ;
 		   var likes = data.message.likes; 
-		   //console.log(data); 
-//console.log( ); 
 
 	
 	dataout =  "Total viewers " + viewers + " Total:" + likes
@@ -385,3 +500,9 @@ function playAudio() {
 		
 		
 } 
+function playSound(filename){
+				var audio = new Audio(filename);
+        audio.play();
+					
+	
+}
